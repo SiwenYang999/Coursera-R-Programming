@@ -6,33 +6,35 @@
 ## makeCacheMatrix takes a square invertible matrix, X, and stores it as a
 ## special object that can be used to cache the inverse of X.
 
-makeCacheMatrix <- function(X = matrix()) {
-    inv <- NULL
-    set <- function(Y) {
-        X <<- Y
-        inv <<- NULL
-    }
-    get <- function() X
-    setinv <- function(solve) inv <<- solve
-    getinv <- function() inv
-    list(set = set, get = get,
-        setinv = setinv,
-        getinv = getinv)
+#1
+makeCacheMatrix <- function(x = matrix()) {
+  m <- NULL
+  set <- function(y) {
+    x <<- y
+    m <<- NULL
+  }
+  get <- function() x
+  setinverse <- function(inverse) m <<- inverse
+  getinverse <- function() m
+  list(set = set,
+       get = get,
+       setinverse = setinverse,
+       getinverse = getinverse)
 }
 
 
 ## cacheSolve returns the inverse of a matrix object create by makeCacheMatrix.
 ## If the inverse has already been calculated, it will be retrieved from the
 ## cache instead of being computed by the solve function.
-
-cacheSolve <- function(X, ...) {
-    inv <- X$getinv()
-    if(!is.null(inv)) {
-        message("getting cached data")
-        return(inv)
-    }
-    data <- X$get()
-    inv <- solve(data, ...)
-    X$setinv(inv)
-    inv
+#2
+cacheSolve <- function(x, ...) {
+  m <- x$getinverse()
+  if (!is.null(m)) {
+    message("getting cached data")
+    return(m)
+  }
+  data <- x$get()
+  m <- solve(data, ...)
+  x$setinverse(m)
+  m
 }
